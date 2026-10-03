@@ -6,154 +6,32 @@
 
 **Vision · Language · Multimodal Learning · Physical AI**
 
-I like building AI systems far enough below the API layer that I can understand  
-**what the model sees, how it learns, why it fails, and what to try next.**
+I am interested in understanding AI systems at the level where  
+**representations, objectives, information flow, optimization, and failure modes** become visible.
 
 </div>
 
 ---
 
-## 🧭 A little about me
+## 🧭 Who I am
 
-I started from **Software Engineering**, then gradually moved deeper into AI by building systems across different modalities.
+I started from **Software Engineering**, but gradually moved toward AI because I became more interested in a deeper question:
 
-My path so far has been roughly:
+> **How do we make a machine build useful internal representations of the world?**
 
-```text
-Machine Translation / ASR
-        ↓
-Language & Sequence Modeling
+I tend to learn by building systems myself, going below the API layer, and tracing what actually happens inside the model.
 
-Object Detection / Landmark Detection
-        ↓
-Visual Representation & Perception
+I am less interested in treating architectures as fixed recipes, and more interested in understanding:
 
-Language + Vision
-        ↓
-VLM → VLA → Physical AI
-```
-
-What keeps me interested is not simply making a model run. I enjoy the point where something does **not** work as expected, because that is usually where the real learning begins: tracing information flow, checking objectives, finding representation bottlenecks, debugging training dynamics, or discovering that the problem is actually in inference rather than the model itself.
+- why a representation works,
+- what information is preserved or lost,
+- how objectives shape the learned space,
+- where optimization fails,
+- and what changes when AI moves from digital tasks into the physical world.
 
 ---
 
-## 🚧 What I'm working on now
-
-### InA-Bridge — Vision–Language Model
-
-My current main project is a VLM architecture built around the idea that **visual perception and language alignment do not have to be the same thing**.
-
-```text
-DINOv3
-   ↓
-Q-Former
-   ↓
-Projector
-   ↓
-Qwen3-4B
-```
-
-The idea is to preserve a rich self-supervised visual representation first, then learn how language should access that representation through a separate bridge.
-
-Some of the parts I am implementing:
-
-- 🧩 **Q-Former** with 128 learnable visual queries
-- 🔀 custom cross-attention and objective-specific attention masks
-- 🔗 **ITC / ITM / ITG** multimodal objectives
-- 🧠 multi-positive contrastive learning
-- 👨‍🏫 EMA momentum teacher + soft targets
-- 🗃️ MoCo-style memory queue
-- 🎯 similarity-based hard-negative mining
-- ⚙️ mixed precision, gradient accumulation, clipping, warmup–cosine scheduling
-- ☁️ FSDP / ZeRO-3 as the next scaling step
-
-The project is still in progress. I am currently moving from local pipeline validation toward full DINOv3 integration and larger-scale distributed training.
-
-The question I keep coming back to is:
-
-> If vision is aligned too strongly with text from the beginning, what visual information do we lose simply because people rarely describe it in language?
-
-That question is also one reason I am interested in **Physical AI**.
-
----
-
-## 🧠 Projects I learned the most from
-
-### 🌐 English → Vietnamese Machine Translation
-
-This was one of the projects that taught me what an **end-to-end AI system** really means.
-
-I worked through the entire pipeline:
-
-```text
-Raw corpora
-→ cleaning
-→ language / semantic filtering
-→ tokenizer
-→ Transformer
-→ training
-→ beam-search decoding
-```
-
-Highlights:
-
-- 35M+ documented sentence pairs
-- fastText language filtering + LaBSE semantic filtering
-- 40K SentencePiece Unigram vocabulary
-- 94.76M-parameter Transformer
-- 6 encoder + 6 decoder layers
-- pre-RMSNorm + SDPA attention
-- teacher forcing, label smoothing, gradient accumulation
-- custom batched beam search + KV cache
-- 215K+ optimizer updates
-- reported COMET: **0.725** on EVBCorpus 2.0
-
-One useful failure I found was in cached decoding: KV caching is not enough by itself — positional state and beam-parent state also have to remain consistent. That pushed me to think much more carefully about **causality and inference state**, not just training loss.
-
----
-
-### 👁️ YOLOv10-Style Object Detection
-
-I implemented a YOLOv10-style detector directly in PyTorch because I wanted to understand what happens below `model.train()`.
-
-Things I worked on:
-
-- custom backbone blocks: C2f / CIB / SCDown / SPPF
-- PAFPN multi-scale feature fusion
-- three-scale decoupled detection heads
-- one-to-many + one-to-one branches
-- Task-Aligned Assignment
-- BCE + CIoU + DFL objectives
-- EMA, AMP, warmup–cosine scheduling
-- Objects365-derived pretraining → COCO fine-tuning
-- ONNX export and NMS-free runtime
-
-A stored EMA evaluation reached **37.04% mAP50-95** on COCO validation.
-
-The most interesting part was not the final number. Early training had relatively strong precision but weaker recall, and small-object / P3 behavior became a clear bottleneck. That forced me to look at **feature scale, assignment, object size, and augmentation** instead of treating mAP as one opaque score.
-
----
-
-## 🎙️ Other things I've built
-
-### Vietnamese ASR
-
-- ~5,292 hours of audio
-- ~1.35M processed samples
-- 80-bin log-Mel spectrograms
-- Conv1D frontend + Transformer encoder-decoder
-- 145.2M parameters
-- autoregressive decoding with cross-attention
-- beam search + KV cache
-- reported WER: **13.75%**
-
-### Driver-state / Landmark Detection
-
-I am also exploring fine-grained face / eye / mouth representations, temporal modeling, transfer learning, feature selection, metaheuristic optimization, and eventually reinforcement learning for adaptive driver-state systems.
-
----
-
-## 🔬 How I like to work
+## 🔬 How I tend to think
 
 My default loop is:
 
@@ -161,50 +39,76 @@ My default loop is:
 Build → Understand → Diagnose → Experiment
 ```
 
-**Build** — implement enough of the system to control the important mechanisms.  
-**Understand** — follow tensors, gradients, objectives, representations, memory and compute.  
-**Diagnose** — treat failure as information instead of hiding it.  
-**Experiment** — change one meaningful thing and test a hypothesis.
+**Build**  
+Implement enough of the system to control the important mechanisms.
 
-I don't mind a project being unfinished if I can clearly explain:
+**Understand**  
+Trace tensors, gradients, objectives, representations, memory, compute, and information flow.
 
-- what currently works,
-- what does not,
-- why I think it fails,
-- and what experiment should come next.
+**Diagnose**  
+Treat failures as evidence. If something breaks, I want to know whether the cause is data, representation, optimization, architecture, or inference.
 
----
+**Experiment**  
+Change one meaningful thing, form a hypothesis, and test it.
 
-## 🌱 Where I want to go
-
-Long term, I want to move toward:
-
-**Multimodal Intelligence → VLA → Physical AI**
-
-A robot operating in the real world cannot rely only on concepts that happen to be easy to describe with text. It needs geometry, spatial relationships, object state, temporal continuity, uncertainty, and persistent representations of the world.
-
-Topics I am especially interested in:
-
-- self-supervised vision
-- multimodal representation learning
-- contrastive learning
-- spatial / temporal reasoning
-- world models
-- VLM / VLA
-- reinforcement learning
-- distributed training
-- efficient multimodal systems
+I do not think an unfinished system is necessarily a failed system.  
+If I can explain **what is wrong, why it is wrong, and what experiment should come next**, then the system has already taught me something valuable.
 
 ---
 
-## 🛠️ Tech I use
+## 🧠 Questions I care about
 
-`Python` `PyTorch` `Transformers` `CUDA` `Hugging Face`  
-`OpenCV` `ONNX` `Docker` `Linux` `Git`  
-`SentencePiece` `fastText` `LaBSE`  
-`FSDP` `ZeRO-3` `AMP/BF16/FP16`
+Some questions I keep returning to:
 
-Foundations I care about: **linear algebra, probability, optimization, algorithms, information flow, and systems thinking.**
+- **Should visual perception be aligned with language as early as possible?**
+- If a vision model is heavily trained around text, **what visual information disappears because people rarely describe it?**
+- Can a model preserve a richer **non-linguistic world representation**, then let language sit on top of it?
+- How should multimodal systems represent **space, geometry, object state, time, and uncertainty**?
+- What separates a model that can describe the world from one that can **act inside it**?
+- How should reinforcement learning be used when adaptation has to happen **after** a strong initial model already exists?
+- Where is the real boundary between gradient-based learning and population/search-based optimization?
+- How much of “intelligence” is really a problem of **searching a huge state or parameter space efficiently**?
+- How do we distinguish a model that memorizes correlations from one that has learned a representation useful for reasoning and control?
+
+---
+
+## 🌱 Direction
+
+My long-term direction is:
+
+```text
+Vision + Language
+      ↓
+Multimodal Representation
+      ↓
+Vision–Language–Action
+      ↓
+Physical AI
+```
+
+I am especially interested in the transition from models that **recognize and describe** to systems that can:
+
+- perceive,
+- maintain state,
+- reason,
+- adapt,
+- and act in the physical world.
+
+That transition is much harder than adding another modality.  
+The physical world is continuous, partially observed, noisy, dynamic, and full of information that does not naturally fit into text.
+
+---
+
+## ⚙️ What I value technically
+
+I care about:
+
+`Representation Learning` · `Self-Supervised Learning` · `Contrastive Learning`  
+`Transformers` · `Vision` · `Language` · `Multimodal Learning`  
+`Optimization` · `Reinforcement Learning` · `Distributed Training`  
+`Information Flow` · `Failure Analysis` · `Systems Thinking`
+
+I prefer understanding **mechanisms and trade-offs** over memorizing model names.
 
 ---
 
@@ -212,7 +116,9 @@ Foundations I care about: **linear algebra, probability, optimization, algorithm
 
 Looking toward Vietnam's development goals for 2045, I believe a high-income economy cannot rely indefinitely on low-cost labor or remain concentrated at the end of global value chains.
 
-That is one of the reasons I chose to take AI research seriously: I want to understand and help build core technology, not only consume it.
+That is one of the reasons I take AI research seriously:
+
+> **I want to understand and help build core technology, not only consume it.**
 
 ---
 
@@ -221,8 +127,6 @@ That is one of the reasons I chose to take AI research seriously: I want to unde
 - **Email:** trandomanhduy2004@gmail.com
 - **Location:** Ho Chi Minh City, Vietnam
 - **Education:** Posts and Telecommunications Institute of Technology (PTIT)
-
-If you're working on a difficult AI problem involving **vision, language, multimodal learning, or physical intelligence**, I'd be interested in talking.
 
 ---
 
