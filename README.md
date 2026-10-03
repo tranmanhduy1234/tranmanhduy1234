@@ -1,128 +1,109 @@
 <div align="center">
 
-# Hi, I'm Mạnh Duy 👋
+# Hi, I'm Mạnh Duy
 
-### AI Researcher / Research Engineer in progress
+### AI Research Engineer in progress
 
-**Vision · Language · Multimodal Learning · Physical AI**
-
-I am interested in understanding AI systems at the level where  
-**representations, objectives, information flow, optimization, and failure modes** become visible.
+**Building toward Multimodal Intelligence and Physical AI**
 
 </div>
 
 ---
 
-## 🧭 Who I am
+## About Me
 
-I started from **Software Engineering**, but gradually moved toward AI because I became more interested in a deeper question:
+I started from **Software Engineering** and gradually moved toward AI as I became more interested in building and understanding intelligent systems rather than only developing conventional software.
 
-> **How do we make a machine build useful internal representations of the world?**
+My current direction sits between **research and engineering**.
 
-I tend to learn by building systems myself, going below the API layer, and tracing what actually happens inside the model.
+I want to understand new ideas deeply enough to implement them, test them, find where they fail, and gradually turn them into systems that actually work.
 
-I am less interested in treating architectures as fixed recipes, and more interested in understanding:
+I do not see my career as simply becoming someone who uses AI tools.
 
-- why a representation works,
-- what information is preserved or lost,
-- how objectives shape the learned space,
-- where optimization fails,
-- and what changes when AI moves from digital tasks into the physical world.
+My goal is to become someone who can contribute to **how AI systems themselves are designed, trained, evaluated, and improved**.
 
 ---
 
-## 🔬 How I tend to think
+## How I Work
 
-My default loop is:
+I tend to learn through a simple cycle:
 
-```text
-Build → Understand → Diagnose → Experiment
-```
+**Build → Understand → Diagnose → Experiment**
 
-**Build**  
-Implement enough of the system to control the important mechanisms.
+I prefer working directly with difficult problems rather than staying only at the conceptual level.
 
-**Understand**  
-Trace tensors, gradients, objectives, representations, memory, compute, and information flow.
+When something fails, I try to understand the reason before replacing it.
 
-**Diagnose**  
-Treat failures as evidence. If something breaks, I want to know whether the cause is data, representation, optimization, architecture, or inference.
+For me, progress is not only about obtaining a better result. It is also about being able to explain:
 
-**Experiment**  
-Change one meaningful thing, form a hypothesis, and test it.
+- what worked,
+- what failed,
+- why it happened,
+- and what should be tested next.
 
-I do not think an unfinished system is necessarily a failed system.  
-If I can explain **what is wrong, why it is wrong, and what experiment should come next**, then the system has already taught me something valuable.
+I value depth, independence, and intellectual honesty more than presenting unfinished work as something complete.
 
 ---
 
-## 🧠 Questions I care about
+## Career Direction
 
-Some questions I keep returning to:
+My near-term goal is to grow into an **AI Research Engineer**, working close to model development, experimentation, and research.
 
-- **Should visual perception be aligned with language as early as possible?**
-- If a vision model is heavily trained around text, **what visual information disappears because people rarely describe it?**
-- Can a model preserve a richer **non-linguistic world representation**, then let language sit on top of it?
-- How should multimodal systems represent **space, geometry, object state, time, and uncertainty**?
-- What separates a model that can describe the world from one that can **act inside it**?
-- How should reinforcement learning be used when adaptation has to happen **after** a strong initial model already exists?
-- Where is the real boundary between gradient-based learning and population/search-based optimization?
-- How much of “intelligence” is really a problem of **searching a huge state or parameter space efficiently**?
-- How do we distinguish a model that memorizes correlations from one that has learned a representation useful for reasoning and control?
+My longer-term direction is:
+
+**Vision & Language → Multimodal Intelligence → Vision-Language-Action → Physical AI**
+
+I am particularly interested in the transition from AI systems that understand digital information to systems that can eventually **perceive, reason, adapt, and act in the real world**.
+
+Over time, I want to work on problems where research, engineering, and real-world intelligence meet.
 
 ---
 
-## 🌱 Direction
+## What I Want to Become
 
-My long-term direction is:
+I want to develop into an engineer-researcher who can:
 
-```text
-Vision + Language
-      ↓
-Multimodal Representation
-      ↓
-Vision–Language–Action
-      ↓
-Physical AI
-```
+- read and understand new research,
+- turn ideas into working systems,
+- identify important failure modes,
+- design meaningful experiments,
+- and contribute to the development of new AI capabilities.
 
-I am especially interested in the transition from models that **recognize and describe** to systems that can:
+I am not trying to specialize only in using existing models.
 
-- perceive,
-- maintain state,
-- reason,
-- adapt,
-- and act in the physical world.
-
-That transition is much harder than adding another modality.  
-The physical world is continuous, partially observed, noisy, dynamic, and full of information that does not naturally fit into text.
+I want to gradually move closer to **core AI development**.
 
 ---
 
-## ⚙️ What I value technically
+## Why This Matters to Me
 
-I care about:
+I also care about the broader technological position of Vietnam.
 
-`Representation Learning` · `Self-Supervised Learning` · `Contrastive Learning`  
-`Transformers` · `Vision` · `Language` · `Multimodal Learning`  
-`Optimization` · `Reinforcement Learning` · `Distributed Training`  
-`Information Flow` · `Failure Analysis` · `Systems Thinking`
+A country cannot move indefinitely toward a high-income economy while remaining dependent on low-cost labor or staying mainly at the downstream end of global technology value chains.
 
-I prefer understanding **mechanisms and trade-offs** over memorizing model names.
+For that reason, I want my career to move toward technologies that are difficult to build, difficult to master, and strategically important.
 
----
+AI is one of them.
 
-## 🇻🇳 Why this matters to me
+My long-term ambition is simple:
 
-Looking toward Vietnam's development goals for 2045, I believe a high-income economy cannot rely indefinitely on low-cost labor or remain concentrated at the end of global value chains.
-
-That is one of the reasons I take AI research seriously:
-
-> **I want to understand and help build core technology, not only consume it.**
+> **To understand, build, and eventually contribute to core technology rather than only consume it.**
 
 ---
 
-## 📫 Contact
+## Current Focus
+
+At this stage, I am concentrating on building a strong foundation in three main directions:
+
+- Vision-Language Models
+- Machine Translation
+- Object Detection
+
+These projects form part of a broader personal roadmap toward multimodal intelligence and, eventually, Physical AI.
+
+---
+
+## Contact
 
 - **Email:** trandomanhduy2004@gmail.com
 - **Location:** Ho Chi Minh City, Vietnam
@@ -132,6 +113,6 @@ That is one of the reasons I take AI research seriously:
 
 <div align="center">
 
-### Build deeply. Understand mechanisms. Learn from failure.
+**Build deeply. Understand what fails. Keep moving toward harder problems.**
 
 </div>
