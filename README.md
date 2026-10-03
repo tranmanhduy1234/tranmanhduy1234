@@ -1,221 +1,233 @@
-# Trần Đỗ Mạnh Duy
+<div align="center">
 
-**AI Researcher / Research Engineer**  
-Software Engineering @ Posts and Telecommunications Institute of Technology (PTIT)
+# Hi, I'm Mạnh Duy 👋
 
-I am interested in building AI systems from first principles and understanding the mechanisms behind them — representation, information flow, optimization, training dynamics, inference, and failure modes.
+### AI Researcher / Research Engineer in progress
 
-My current research direction moves from **modality-specific systems** toward **multimodal and physical intelligence**:
+**Vision · Language · Multimodal Learning · Physical AI**
 
-```mermaid
-flowchart LR
-    V["Vision<br/>Object Detection · Landmark Detection"] --> M["Vision–Language<br/>Multimodal Representation"]
-    L["Language<br/>Machine Translation · ASR"] --> M
-    M --> P["Physical AI / VLA<br/>Perception · Reasoning · Action"]
-```
+I like building AI systems far enough below the API layer that I can understand  
+**what the model sees, how it learns, why it fails, and what to try next.**
 
-I believe that building stronger AI capability is not only about using larger pretrained models. It also requires understanding how representations are formed, what information is lost during alignment, how objectives shape the learned space, and where a system fails when moved from a controlled benchmark to the physical world.
+</div>
 
 ---
 
-## Current focus
+## 🧭 A little about me
 
-### InA-Bridge — Vision–Language Pretraining
+I started from **Software Engineering**, then gradually moved deeper into AI by building systems across different modalities.
 
-My main ongoing project is a query-based vision–language architecture designed to separate **visual perception** from **language alignment**.
-
-**Target architecture**
+My path so far has been roughly:
 
 ```text
-DINOv3 ViT-L/16
-    ↓ dense visual features
+Machine Translation / ASR
+        ↓
+Language & Sequence Modeling
+
+Object Detection / Landmark Detection
+        ↓
+Visual Representation & Perception
+
+Language + Vision
+        ↓
+VLM → VLA → Physical AI
+```
+
+What keeps me interested is not simply making a model run. I enjoy the point where something does **not** work as expected, because that is usually where the real learning begins: tracing information flow, checking objectives, finding representation bottlenecks, debugging training dynamics, or discovering that the problem is actually in inference rather than the model itself.
+
+---
+
+## 🚧 What I'm working on now
+
+### InA-Bridge — Vision–Language Model
+
+My current main project is a VLM architecture built around the idea that **visual perception and language alignment do not have to be the same thing**.
+
+```text
+DINOv3
+   ↓
 Q-Former
-    ↓ learned visual queries
+   ↓
 Projector
-    ↓ LLM embedding space
+   ↓
 Qwen3-4B
 ```
 
-The Q-Former uses **128 learned visual queries**, custom cross-attention, separate query/text feed-forward paths, and objective-specific attention masks.
+The idea is to preserve a rich self-supervised visual representation first, then learn how language should access that representation through a separate bridge.
 
-Stage 1 combines three objectives:
+Some of the parts I am implementing:
 
-- **ITC — Image–Text Contrastive Learning** for representation alignment.
-- **ITM — Image–Text Matching** for fine-grained pair discrimination.
-- **ITG — Image-Grounded Text Generation** for causal generation conditioned on visual queries.
+- 🧩 **Q-Former** with 128 learnable visual queries
+- 🔀 custom cross-attention and objective-specific attention masks
+- 🔗 **ITC / ITM / ITG** multimodal objectives
+- 🧠 multi-positive contrastive learning
+- 👨‍🏫 EMA momentum teacher + soft targets
+- 🗃️ MoCo-style memory queue
+- 🎯 similarity-based hard-negative mining
+- ⚙️ mixed precision, gradient accumulation, clipping, warmup–cosine scheduling
+- ☁️ FSDP / ZeRO-3 as the next scaling step
 
-The training system also includes:
+The project is still in progress. I am currently moving from local pipeline validation toward full DINOv3 integration and larger-scale distributed training.
 
-- multi-positive contrastive targets for multiple captions of the same image;
-- max-over-query similarity;
-- an **EMA momentum teacher** with soft-target distillation;
-- an image-ID-aware **MoCo-style memory queue**;
-- similarity-weighted **hard-negative mining**;
-- objective-aware gradient accumulation;
-- mixed precision, gradient clipping, AdamW, and warmup–cosine scheduling.
+The question I keep coming back to is:
 
-The current Stage-1 pipeline is still being scaled. Local experiments are used to validate the training mechanics, while full DINOv3 integration and distributed training with **FSDP / ZeRO-3** are the next steps.
+> If vision is aligned too strongly with text from the beginning, what visual information do we lose simply because people rarely describe it in language?
 
-A central research question behind the project is:
-
-> Should vision be aligned with language as early as possible, or should a system first preserve a richer non-linguistic visual representation and learn language alignment through a separate bridge?
+That question is also one reason I am interested in **Physical AI**.
 
 ---
 
-## Featured projects
+## 🧠 Projects I learned the most from
 
-### 1. English → Vietnamese Neural Machine Translation
+### 🌐 English → Vietnamese Machine Translation
 
-A complete end-to-end NMT system covering **data construction → representation → training → decoding**.
+This was one of the projects that taught me what an **end-to-end AI system** really means.
 
-**Data**
-- More than **35M documented sentence pairs** from multiple corpora.
-- Text normalization, pair deduplication, token-length and length-ratio filtering.
-- **fastText** language identification.
-- **LaBSE** semantic filtering for source–target consistency.
-- 40K-piece **SentencePiece Unigram** vocabulary.
+I worked through the entire pipeline:
 
-**Model**
-- **94.76M-parameter Transformer**.
-- 6 encoder + 6 decoder layers.
-- `d_model = 640`, 8 attention heads.
-- Pre-RMSNorm architecture.
-- PyTorch SDPA-based attention.
-- Shared source / target / output embeddings.
+```text
+Raw corpora
+→ cleaning
+→ language / semantic filtering
+→ tokenizer
+→ Transformer
+→ training
+→ beam-search decoding
+```
 
-**Training & inference**
-- teacher forcing;
-- causal and padding masks;
-- token-level cross-entropy with label smoothing;
-- AdamW, gradient accumulation, clipping, warmup–cosine scheduling;
-- resumable checkpoints;
-- custom batched beam search with EOS handling, length penalty, KV cache, and beam-parent cache reordering.
+Highlights:
 
-A stored checkpoint records **215K+ optimizer updates**. The repository reports **COMET 0.725 on EVBCorpus 2.0**.
+- 35M+ documented sentence pairs
+- fastText language filtering + LaBSE semantic filtering
+- 40K SentencePiece Unigram vocabulary
+- 94.76M-parameter Transformer
+- 6 encoder + 6 decoder layers
+- pre-RMSNorm + SDPA attention
+- teacher forcing, label smoothing, gradient accumulation
+- custom batched beam search + KV cache
+- 215K+ optimizer updates
+- reported COMET: **0.725** on EVBCorpus 2.0
 
-One of the most useful lessons from this project came from inference debugging: cached decoding is only correct if positional state and beam-dependent cache state remain consistent with full-prefix causal decoding. Building the decoder exposed how a system can fail at inference even when the trained Transformer itself is correct.
-
----
-
-### 2. YOLOv10-Style Object Detection & Transfer Learning
-
-A detector implemented directly in PyTorch to study object detection below the framework/API layer.
-
-**Architecture**
-- C2f / CIB / SCDown / SPPF-style backbone blocks.
-- Bidirectional **PAFPN** multi-scale feature fusion.
-- Three-scale decoupled classification / regression heads.
-- Independent **one-to-many** and **one-to-one** branches for end-to-end / NMS-free prediction.
-
-**Assignment & objectives**
-- Task-Aligned Assignment using classification confidence and CIoU-based localization quality.
-- Candidate-in-box filtering and top-k positive selection.
-- Quality-weighted soft targets.
-- **BCE classification loss + CIoU regression loss + Distribution Focal Loss (DFL)**.
-
-**Training**
-- Objects365-derived pretraining.
-- COCO fine-tuning.
-- AdamW, AMP, FP32 assignment/loss computation, gradient clipping, EMA, warmup–cosine scheduling.
-- Staged transfer learning with controlled backbone/neck unfreezing and BatchNorm freezing.
-
-**Deployment**
-- Split backbone-neck/head ONNX export.
-- Backbone-only export option.
-- Precision-aware export paths.
-- NMS-free runtime with coordinate restoration and top-k prediction filtering.
-
-A stored EMA evaluation reports **37.04% mAP50-95 on COCO validation**.
-
-The project also became a study of failure modes: early precision improved faster than recall, while small-object / P3 behavior remained a bottleneck. That pushed the analysis toward feature-scale sensitivity, assignment behavior, and augmentation rather than treating the final metric as a black box.
+One useful failure I found was in cached decoding: KV caching is not enough by itself — positional state and beam-parent state also have to remain consistent. That pushed me to think much more carefully about **causality and inference state**, not just training loss.
 
 ---
 
-## Other work
+### 👁️ YOLOv10-Style Object Detection
 
-### Vietnamese Automatic Speech Recognition
-- ~5,292 hours of audio and ~1.35M processed samples.
-- 16 kHz mono preprocessing and 80-bin log-Mel spectrograms.
-- Conv1D acoustic frontend with temporal downsampling.
-- 145.2M-parameter Transformer encoder-decoder.
-- Autoregressive decoding with cross-attention rather than CTC.
-- Batched beam search with KV caching.
-- Reported **WER: 13.75%**.
+I implemented a YOLOv10-style detector directly in PyTorch because I wanted to understand what happens below `model.train()`.
 
-### Landmark Detection / Driver State Perception
-I also work on fine-grained visual representations for face, eye, mouth, and driver-state analysis, including transfer learning from object-detection backbones, landmark regression, temporal modeling, and feature-level optimization.
+Things I worked on:
+
+- custom backbone blocks: C2f / CIB / SCDown / SPPF
+- PAFPN multi-scale feature fusion
+- three-scale decoupled detection heads
+- one-to-many + one-to-one branches
+- Task-Aligned Assignment
+- BCE + CIoU + DFL objectives
+- EMA, AMP, warmup–cosine scheduling
+- Objects365-derived pretraining → COCO fine-tuning
+- ONNX export and NMS-free runtime
+
+A stored EMA evaluation reached **37.04% mAP50-95** on COCO validation.
+
+The most interesting part was not the final number. Early training had relatively strong precision but weaker recall, and small-object / P3 behavior became a clear bottleneck. That forced me to look at **feature scale, assignment, object size, and augmentation** instead of treating mAP as one opaque score.
 
 ---
 
-## How I approach research
+## 🎙️ Other things I've built
 
-I try to work through four layers:
+### Vietnamese ASR
+
+- ~5,292 hours of audio
+- ~1.35M processed samples
+- 80-bin log-Mel spectrograms
+- Conv1D frontend + Transformer encoder-decoder
+- 145.2M parameters
+- autoregressive decoding with cross-attention
+- beam search + KV cache
+- reported WER: **13.75%**
+
+### Driver-state / Landmark Detection
+
+I am also exploring fine-grained face / eye / mouth representations, temporal modeling, transfer learning, feature selection, metaheuristic optimization, and eventually reinforcement learning for adaptive driver-state systems.
+
+---
+
+## 🔬 How I like to work
+
+My default loop is:
 
 ```text
 Build → Understand → Diagnose → Experiment
 ```
 
-**Build**  
-Implement enough of the system to control the important mechanisms instead of treating the model as a black-box API.
+**Build** — implement enough of the system to control the important mechanisms.  
+**Understand** — follow tensors, gradients, objectives, representations, memory and compute.  
+**Diagnose** — treat failure as information instead of hiding it.  
+**Experiment** — change one meaningful thing and test a hypothesis.
 
-**Understand**  
-Trace information flow, objectives, gradients, representation bottlenecks, memory/compute trade-offs, and inference state.
+I don't mind a project being unfinished if I can clearly explain:
 
-**Diagnose**  
-Treat failures as information. A model that does not work is useful if the failure can be localized to data, representation, optimization, architecture, or inference.
-
-**Experiment**  
-Use controlled ablations and measurable hypotheses rather than adding complexity without knowing what changed.
-
----
-
-## Research direction
-
-My long-term direction is **multimodal intelligence → Vision–Language–Action → Physical AI**.
-
-The transition from digital AI to physical systems changes the problem substantially. A physical agent must do more than recognize an object or generate a description. It must preserve geometry, spatial relations, object state, temporal context, uncertainty, and information that may never appear in natural-language supervision.
-
-This is why I am particularly interested in:
-
-- self-supervised visual representations;
-- multimodal representation learning;
-- contrastive learning;
-- world models and persistent state;
-- spatial and temporal reasoning;
-- VLM / VLA architectures;
-- reinforcement learning for adaptive decision-making;
-- efficient distributed training for large multimodal models.
+- what currently works,
+- what does not,
+- why I think it fails,
+- and what experiment should come next.
 
 ---
 
-## Technology
+## 🌱 Where I want to go
 
-**Deep Learning / ML**  
-PyTorch · Transformers · Computer Vision · Object Detection · NMT · ASR · VLM · Contrastive Learning · Transfer Learning · Metaheuristic Optimization · Reinforcement Learning
+Long term, I want to move toward:
 
-**Training / Systems**  
-CUDA · AMP/BF16/FP16 · FSDP / ZeRO-3 · EMA · Gradient Accumulation · Distributed Training · ONNX · Docker
+**Multimodal Intelligence → VLA → Physical AI**
 
-**Data / Engineering**  
-Hugging Face · SentencePiece · fastText · LaBSE · OpenCV · Linux · Git
+A robot operating in the real world cannot rely only on concepts that happen to be easy to describe with text. It needs geometry, spatial relationships, object state, temporal continuity, uncertainty, and persistent representations of the world.
 
-**Foundations**  
-Linear Algebra · Probability · Optimization · Algorithms · Python · C/C++ · SQL
+Topics I am especially interested in:
 
----
-
-## Motivation
-
-Looking toward Vietnam's development goals for 2045, I believe that a high-income economy cannot rely indefinitely on low-cost labor or remain concentrated in the final stages of the value chain.
-
-That perspective is one of the strongest motivations behind my research path: to understand, build, and gradually help master core technologies rather than only consume them.
+- self-supervised vision
+- multimodal representation learning
+- contrastive learning
+- spatial / temporal reasoning
+- world models
+- VLM / VLA
+- reinforcement learning
+- distributed training
+- efficient multimodal systems
 
 ---
 
-## Contact
+## 🛠️ Tech I use
+
+`Python` `PyTorch` `Transformers` `CUDA` `Hugging Face`  
+`OpenCV` `ONNX` `Docker` `Linux` `Git`  
+`SentencePiece` `fastText` `LaBSE`  
+`FSDP` `ZeRO-3` `AMP/BF16/FP16`
+
+Foundations I care about: **linear algebra, probability, optimization, algorithms, information flow, and systems thinking.**
+
+---
+
+## 🇻🇳 Why this matters to me
+
+Looking toward Vietnam's development goals for 2045, I believe a high-income economy cannot rely indefinitely on low-cost labor or remain concentrated at the end of global value chains.
+
+That is one of the reasons I chose to take AI research seriously: I want to understand and help build core technology, not only consume it.
+
+---
+
+## 📫 Contact
 
 - **Email:** trandomanhduy2004@gmail.com
 - **Location:** Ho Chi Minh City, Vietnam
-- **Institution:** Posts and Telecommunications Institute of Technology (PTIT)
+- **Education:** Posts and Telecommunications Institute of Technology (PTIT)
 
-> I am currently looking for opportunities to work on difficult AI problems where implementation depth, research thinking, and system-level understanding matter.
+If you're working on a difficult AI problem involving **vision, language, multimodal learning, or physical intelligence**, I'd be interested in talking.
+
+---
+
+<div align="center">
+
+### Build deeply. Understand mechanisms. Learn from failure.
+
+</div>
